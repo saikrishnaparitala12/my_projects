@@ -1261,7 +1261,7 @@ export default function AdminDashboard() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <label className="block font-accent text-[10px] tracking-widest uppercase mb-1.5" style={{ color: 'var(--text-muted)' }}>{t.admin_orig_price}</label>
-                    <input type="number" value={form.originalPrice}
+                    <input type="string" value={form.originalPrice}
                       onChange={e => {
                         const val = e.target.value;
                         setForm(f => ({ ...f, originalPrice: val }));
@@ -1271,7 +1271,7 @@ export default function AdminDashboard() {
                   </div>
                   <div>
                     <label className="block font-accent text-[10px] tracking-widest uppercase mb-1.5" style={{ color: 'var(--text-muted)' }}>{t.admin_discount_pct}</label>
-                    <input type="number" value={form.discountPercent}
+                    <input type="string" value={form.discountPercent}
                       onChange={e => {
                         const val = e.target.value;
                         setForm(f => ({ ...f, discountPercent: val }));
@@ -1284,7 +1284,7 @@ export default function AdminDashboard() {
                   <label className="block font-accent text-[10px] tracking-widets uppercase mb-1.5" style={{ color: 'var(--text-muted)' }}>
                     {t.admin_final_price} {form.discountPercent ? t.admin_auto_calc : ''}
                   </label>
-                  <input type="number" value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} className="input-field" min="0" required />
+                  <input type="string" disabled value={form.price} onChange={e => setForm(f => ({ ...f, price: e.target.value }))} className="input-field" min="0" required />
                 </div>
                 {form.discountPercent && form.originalPrice && form.price && (
                   <div className="flex items-center gap-3 p-3 rounded-lg" style={{ background: 'var(--bg-muted)', border: '1px solid var(--border)' }}>

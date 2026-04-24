@@ -3,7 +3,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { addProduct, updateProduct, deleteProduct, toggleAvailability, saveStoreContent } from '../../redux/productsSlice';
 import { logoutAdmin } from '../../redux/authSlice';
 import { DEFAULT_CATEGORIES, type Product, type Category, type MediaItem, type StoreContent } from '../../redux/types';
-import { api } from '../../api';
 import { Plus, Pencil, Trash2, LogOut, Upload, X, Eye, EyeOff, Video, Image as ImageIcon, Package, LayoutDashboard, Tag, Info, Sparkles, Save, Users, Menu } from 'lucide-react';
 import { useT } from '../../i18n/useT';
 import LangThemeBar from '../shared/LangThemeBar';

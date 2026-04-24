@@ -45,8 +45,17 @@ export const loginAdmin = createAsyncThunk(
       body: JSON.stringify(payload),
     });
 
-    const user = response.data.user as AuthUser;
-    const token = response.data.token as string;
+    const result = (response.data ?? response) as {
+      user?: AuthUser;
+      token?: string;
+    };
+
+    const user = result.user;
+    const token = result.token;
+
+    if (!user || !token) {
+      throw new Error("Invalid login response");
+    }
 
     if (user.role !== "admin") {
       throw new Error("Admin access only");

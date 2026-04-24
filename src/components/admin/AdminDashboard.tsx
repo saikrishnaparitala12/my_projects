@@ -9,6 +9,7 @@ import { useT } from '../../i18n/useT';
 import LangThemeBar from '../shared/LangThemeBar';
 import { fetchUsers } from '../../redux/usersSlice';
 import { registerAdmin, setup2FA, verify2FA } from '../../redux/adminUsersSlice';
+import { uploadFilesToSupabase, type UploadedMedia } from '../../supabase';
 
 const CATEGORY_META: Record<string, { label: string; emoji: string }> = {
   rings: { label: 'Rings', emoji: '💍' },
@@ -347,17 +348,11 @@ export default function AdminDashboard() {
       }));
     }
 
-    const formData = new FormData();
-    pendingMedia.forEach(item => {
-      if (item.file) formData.append('files', item.file);
-    });
-
-    const response = await api('/uploads/images', {
-      method: 'POST',
-      body: formData,
-    });
-
-    const uploadedMedia = (response.data as Array<{ url: string; originalName: string; resourceType: string }>) ?? [];
+    const uploadedMedia = await uploadFilesToSupabase(
+      pendingMedia
+        .map(item => item.file)
+        .filter((file): file is File => Boolean(file))
+    );
     let uploadIndex = 0;
 
     return mediaItems.map((item): MediaItem => {
@@ -382,18 +377,10 @@ export default function AdminDashboard() {
     const list = Array.from(files);
 
     if (list.length === 0) {
-      return [] as Array<{ url: string; originalName: string; resourceType: string }>;
+      return [] as UploadedMedia[];
     }
 
-    const formData = new FormData();
-    list.forEach(file => formData.append('files', file));
-
-    const response = await api('/uploads/images', {
-      method: 'POST',
-      body: formData,
-    });
-
-    return (response.data as Array<{ url: string; originalName: string; resourceType: string }>) ?? [];
+    return uploadFilesToSupabase(list);
   }
 
   async function handleAboutImagesUpload(files: FileList | null) {
